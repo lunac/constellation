@@ -6,7 +6,10 @@
         "out": true 
     },
     "typescript.tsc.autoDetect": "off",
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.formatOnSave": true,
-    "eslint.format.enable": true
+    "eslint.format.enable": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    }
 }
