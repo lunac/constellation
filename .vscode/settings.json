@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "out": false 
+    },
+    "search.exclude": {
+        "out": true 
+    },
+    "typescript.tsc.autoDetect": "off",
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true,
+    "eslint.format.enable": true
+}
