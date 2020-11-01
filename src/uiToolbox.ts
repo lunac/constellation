@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
 import { common, localize } from './properties';
 
-const quickPickOptions = {
+const quickPickOptions: vscode.QuickPickOptions = {
     ignoreFocusOut: true,
     matchOnDescription: true,
     matchOnDetail: true
+};
+
+const inputBoxOptions: vscode.InputBoxOptions = {
+    ignoreFocusOut: true
 };
 
 type PickCallback = (selected: vscode.QuickPickItem) => void;
@@ -25,4 +29,19 @@ export const yesOrNo = async (
     if (!pickSelected) { return false; }
     if (selectedCB) { selectedCB(pickSelected); }
     return pickSelected.label === options[0].label;
+};
+
+export const inputQuestion = async (
+    placeHolder: string,
+    onSave: (input: string) => void,
+    onValidate?: (input: string) => string
+): Promise<boolean> => {
+    const userAnswer = await vscode.window.showInputBox({
+        ...inputBoxOptions,
+        ...{ placeHolder: placeHolder },
+        ...(onValidate ? { validateInput: onValidate } : {})
+    });
+    if (!userAnswer) { return false; }
+    onSave(userAnswer);
+    return true;
 };
