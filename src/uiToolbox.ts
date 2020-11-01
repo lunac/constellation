@@ -17,7 +17,7 @@ export const quickView = async () => {
 };
 
 export const yesOrNo = async (
-    text: string,
+    placeHolder: string,
     selectedCB?: PickCallback
 ): Promise<boolean> => {
     const options = [{
@@ -25,7 +25,7 @@ export const yesOrNo = async (
     }, {
         label: localize(common.no)
     }];
-    const pickSelected = await vscode.window.showQuickPick(options, { ...quickPickOptions, placeHolder: text });
+    const pickSelected = await vscode.window.showQuickPick(options, { ...quickPickOptions, placeHolder: placeHolder });
     if (!pickSelected) { return false; }
     if (selectedCB) { selectedCB(pickSelected); }
     return pickSelected.label === options[0].label;
