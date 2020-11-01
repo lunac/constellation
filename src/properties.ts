@@ -1,3 +1,5 @@
+import { env } from 'vscode';
+
 export const git = {
     error: {
         notGitRepository: {
@@ -7,4 +9,26 @@ export const git = {
             en: 'not staged files to commit!',
         }
     }
+};
+
+export const common = {
+    yes: {
+        en: 'yes'
+    },
+    no: {
+        en: 'no'
+    }
+};
+
+type PropKey = {
+    en: string,
+    [key: string]: string,
+};
+
+const getLocale = (): string => (env.language.split('-')[0]);
+export const localize = (propkey: PropKey) => {
+    const locale = getLocale();
+    if (locale in propkey) { return propkey[locale]; }
+    if ('en' in propkey) { return propkey.en; }
+    return JSON.stringify(propkey);
 };
