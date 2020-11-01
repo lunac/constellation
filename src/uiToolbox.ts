@@ -16,11 +16,11 @@ export const pickQuestion = async (
     placeHolder: string,
     items: vscode.QuickPickItem[],
     onSelected?: PickCallback,
-): Promise<boolean> => {
-    const pickSelected = await vscode.window.showQuickPick(items, { ...quickPickOptions, placeHolder: placeHolder });
-    if (!pickSelected) { return false; }
-    if (onSelected) { onSelected(pickSelected); }
-    return true;
+): Promise<vscode.QuickPickItem | undefined> => {
+    const selectedPick = await vscode.window.showQuickPick(items, { ...quickPickOptions, placeHolder: placeHolder });
+    if (!selectedPick) { return undefined; }
+    if (onSelected) { onSelected(selectedPick); }
+    return selectedPick;
 };
 
 export const yesOrNo = async (
@@ -32,23 +32,23 @@ export const yesOrNo = async (
     }, {
         label: localize(common.no)
     }];
-    const pickSelected = await vscode.window.showQuickPick(options, { ...quickPickOptions, placeHolder: placeHolder });
-    if (!pickSelected) { return false; }
-    if (selectedCB) { selectedCB(pickSelected); }
-    return pickSelected.label === options[0].label;
+    const selectedPick = await pickQuestion(placeHolder, options);
+    if (!selectedPick) { return false; }
+    if (selectedCB) { selectedCB(selectedPick); }
+    return selectedPick.label === options[0].label;
 };
 
 export const inputQuestion = async (
     placeHolder: string,
     onSave?: (input: string) => void,
     onValidate?: (input: string) => string
-): Promise<boolean> => {
+): Promise<string | undefined> => {
     const userAnswer = await vscode.window.showInputBox({
         ...inputBoxOptions,
         ...{ placeHolder: placeHolder },
         ...(onValidate ? { validateInput: onValidate } : {})
     });
-    if (!userAnswer) { return false; }
+    if (!userAnswer) { return undefined; }
     if (onSave) { onSave(userAnswer); }
-    return true;
+    return userAnswer;
 };
