@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const git = await initGit();
 		if (!git) { return; }
 		if (!(await checkStagedFiles(git))) {
-			vscode.window.showErrorMessage('not staged files to commit!');
+			vscode.window.showErrorMessage(GitProperties.error.noStagedFiles[currentLocale]);
 		}
 
 		vscode.window.showInformationMessage('Committed');
