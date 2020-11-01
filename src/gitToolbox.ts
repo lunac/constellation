@@ -1,4 +1,5 @@
 import simpleGit, { SimpleGit, SimpleGitOptions } from 'simple-git';
+import { git as GitProperties, localize } from './properties';
 
 const options: SimpleGitOptions = {
     baseDir: process.cwd(),
@@ -12,7 +13,7 @@ export const gitBox = async (rootPath: string = process.cwd()) => {
         await git.status();
     } catch (e) {
         console.error(`${e}`);
-        return null;
+        throw new Error(localize(GitProperties.error.notGitRepository));
     }
     return git;
 };

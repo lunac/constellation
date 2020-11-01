@@ -4,14 +4,13 @@ import * as vscode from 'vscode';
 import { gitBox, checkStagedFiles, addAll } from './gitToolbox';
 import { git as GitProperties, localize } from './properties';
 import { yesOrNo } from './uiToolbox';
+import { getMessage } from './compiler';
+import { SimpleGit } from 'simple-git';
 
-const initGit = async () => {
-	const git = await gitBox(vscode.workspace.rootPath);
-	if (!git) {
-		vscode.window.showErrorMessage(localize(GitProperties.error.notGitRepository));
-		return;
-	}
-	return git;
+const stageFiles = async (git: SimpleGit) => {
+	const addFiles = await yesOrNo(localize(GitProperties.info.shouldStageFiles));
+	if (!addFiles) { throw new Error(localize(GitProperties.error.noStagedFiles)); }
+	await addAll(git);
 };
 
 // this method is called when your extension is activated
@@ -25,28 +24,26 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('constellation.helloWorld', async () => {
+	let commands = vscode.commands.registerCommand('constellation.helloWorld', async () => {
 		// The code you place here will be executed every time your command is executed
 
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from constellation!');
 
-		const git = await initGit();
-		if (!git) { return; }
-		if (!(await checkStagedFiles(git))) {
-			const addFiles = await yesOrNo(localize(GitProperties.info.shouldStageFiles));
-			if (!addFiles) {
-				vscode.window.showErrorMessage(localize(GitProperties.error.noStagedFiles));
-				return;
-			}
-			await addAll(git);
+		try {
+			const git = await gitBox(vscode.workspace.rootPath);
+			if (!(await checkStagedFiles(git))) { await stageFiles(git); }
+		} catch (e) {
+			vscode.window.showErrorMessage(e.message);
+			return;
 		}
 
+		vscode.window.showInformationMessage(`${await getMessage()}`);
+
 		vscode.window.showInformationMessage('Committed');
-		console.log(git);
 	});
 
-	context.subscriptions.push(disposable);
+	context.subscriptions.push(commands);
 }
 
 // this method is called when your extension is deactivated
