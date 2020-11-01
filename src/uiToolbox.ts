@@ -15,7 +15,7 @@ type PickCallback = (selected: vscode.QuickPickItem) => void;
 export const pickQuestion = async (
     placeHolder: string,
     items: vscode.QuickPickItem[],
-    onSelected: PickCallback,
+    onSelected?: PickCallback,
 ): Promise<boolean> => {
     const pickSelected = await vscode.window.showQuickPick(items, { ...quickPickOptions, placeHolder: placeHolder });
     if (!pickSelected) { return false; }
@@ -40,7 +40,7 @@ export const yesOrNo = async (
 
 export const inputQuestion = async (
     placeHolder: string,
-    onSave: (input: string) => void,
+    onSave?: (input: string) => void,
     onValidate?: (input: string) => string
 ): Promise<boolean> => {
     const userAnswer = await vscode.window.showInputBox({
@@ -49,6 +49,6 @@ export const inputQuestion = async (
         ...(onValidate ? { validateInput: onValidate } : {})
     });
     if (!userAnswer) { return false; }
-    onSave(userAnswer);
+    if (onSave) { onSave(userAnswer); }
     return true;
 };
