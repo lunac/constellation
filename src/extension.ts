@@ -2,11 +2,13 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { gitBox, checkStagedFiles } from './gitToolbox';
+import { git as GitProperties } from './properties';
 
+const currentLocale = 'en';
 const initGit = async () => {
 	const git = await gitBox(vscode.workspace.rootPath);
 	if (!git) {
-		vscode.window.showErrorMessage('not a git repository (or any of the parent directories): .git');
+		vscode.window.showErrorMessage(GitProperties.error.notGitRepository[currentLocale]);
 		return;
 	}
 	return git;
