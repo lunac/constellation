@@ -1,6 +1,5 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import G = require('glob');
 import * as vscode from 'vscode';
 import { gitBox, checkStagedFiles } from './gitToolbox';
 import { git as GitProperties, localize } from './properties';
