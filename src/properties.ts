@@ -25,6 +25,12 @@ export const common = {
     }
 };
 
+export const compiler = {
+    commitType: {
+        en: 'Pick the correct type for your commit'
+    }
+};
+
 type PropKey = {
     en: string,
     [key: string]: string,
