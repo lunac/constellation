@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { gitBox, checkStagedFiles } from './gitToolbox';
+import { gitBox, checkStagedFiles, addAll } from './gitToolbox';
 import { git as GitProperties, localize } from './properties';
 import { yesOrNo } from './uiToolbox';
 
@@ -39,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 				vscode.window.showErrorMessage(localize(GitProperties.error.noStagedFiles));
 				return;
 			}
+			await addAll(git);
 		}
 
 		vscode.window.showInformationMessage('Committed');

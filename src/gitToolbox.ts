@@ -17,7 +17,12 @@ export const gitBox = async (rootPath: string = process.cwd()) => {
     return git;
 };
 
-export const checkStagedFiles = async (git: SimpleGit): Promise<boolean> => ((await git?.status())?.staged.length > 0);
+export const checkStagedFiles = async (git: SimpleGit): Promise<boolean> => {
+    const status = await git?.status();
+    return status && status.created.length + status.modified.length > 0;
+};
 
 export const commit = async (git: SimpleGit, head: string, body: string) => ((await git?.commit([head, body])));
+
+export const addAll = async (git: SimpleGit) => await git?.add('./*');
 
