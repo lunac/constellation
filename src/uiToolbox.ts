@@ -12,8 +12,15 @@ const inputBoxOptions: vscode.InputBoxOptions = {
 };
 
 type PickCallback = (selected: vscode.QuickPickItem) => void;
-export const quickView = async () => {
-    return {};
+export const pickQuestion = async (
+    placeHolder: string,
+    items: vscode.QuickPickItem[],
+    onSelected: PickCallback,
+): Promise<boolean> => {
+    const pickSelected = await vscode.window.showQuickPick(items, { ...quickPickOptions, placeHolder: placeHolder });
+    if (!pickSelected) { return false; }
+    if (onSelected) { onSelected(pickSelected); }
+    return true;
 };
 
 export const yesOrNo = async (
