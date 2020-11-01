@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 import { gitBox, checkStagedFiles } from './gitToolbox';
 import { git as GitProperties, localize } from './properties';
+import { yesOrNo } from './uiToolbox';
 
 const initGit = async () => {
 	const git = await gitBox(vscode.workspace.rootPath);
@@ -33,7 +34,11 @@ export function activate(context: vscode.ExtensionContext) {
 		const git = await initGit();
 		if (!git) { return; }
 		if (!(await checkStagedFiles(git))) {
-			vscode.window.showErrorMessage(localize(GitProperties.error.noStagedFiles));
+			const addFiles = await yesOrNo(localize(GitProperties.info.shouldStageFiles));
+			if (!addFiles) {
+				vscode.window.showErrorMessage(localize(GitProperties.error.noStagedFiles));
+				return;
+			}
 		}
 
 		vscode.window.showInformationMessage('Committed');

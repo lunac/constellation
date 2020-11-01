@@ -8,6 +8,11 @@ export const git = {
         noStagedFiles: {
             en: 'not staged files to commit!',
         }
+    },
+    info: {
+        shouldStageFiles: {
+            en: 'No staged files were found, do you want to stage all of them?'
+        }
     }
 };
 
