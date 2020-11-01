@@ -1,7 +1,16 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import {gitBox} from './gitToolbox';
+import { gitBox, checkStagedFiles } from './gitToolbox';
+
+const initGit = async () => {
+	const git = await gitBox(vscode.workspace.rootPath);
+	if (!git) {
+		vscode.window.showErrorMessage('not a git repository (or any of the parent directories): .git');
+		return;
+	}
+	return git;
+};
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -20,11 +29,13 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from constellation!');
 
-		const git = await gitBox();
-		if (!git) {
-			vscode.window.showErrorMessage('not a git repository (or any of the parent directories): .git');
-			return;
+		const git = await initGit();
+		if (!git) { return; }
+		if (!(await checkStagedFiles(git))) {
+			vscode.window.showErrorMessage('not staged files to commit!');
 		}
+
+		vscode.window.showInformationMessage('Committed');
 		console.log(git);
 	});
 
@@ -32,4 +43,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
