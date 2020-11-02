@@ -52,5 +52,9 @@ export const config = {
         description: {
             en: 'Adding missing tests or correcting existing tests'
         }
-    }]
+    }],
+    ticketNumber: {
+        optional: false,
+        prefix: '#'
+    }
 };
