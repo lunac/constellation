@@ -33,12 +33,11 @@ export function activate(context: vscode.ExtensionContext) {
 		try {
 			const git = await gitBox(vscode.workspace.rootPath);
 			if (!(await checkStagedFiles(git))) { await stageFiles(git); }
+			vscode.window.showInformationMessage(`${await getMessage()}`);
 		} catch (e) {
 			vscode.window.showErrorMessage(e.message);
 			return;
 		}
-
-		vscode.window.showInformationMessage(`${await getMessage()}`);
 
 		vscode.window.showInformationMessage('Committed');
 	});

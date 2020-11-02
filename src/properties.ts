@@ -22,12 +22,34 @@ export const common = {
     },
     no: {
         en: 'no'
+    },
+    optional: {
+        en: 'optional'
     }
 };
 
 export const compiler = {
-    commitType: {
-        en: 'Pick the correct type for your commit'
+    placeholders: {
+        commitType: {
+            en: 'Pick the correct type for your commit'
+        },
+        ticketNumber: {
+            en: 'Write your ticket number separated by comma ( , )'
+        },
+        head: {
+            en: 'Write an message short and clear, using only imperative sense'
+        }
+    },
+    errors: {
+        noCommitType: {
+            en: 'You must select a commit type!'
+        },
+        noTicketNumber: {
+            en: 'You must write at least one ticket number'
+        },
+        noHead: {
+            en: 'You must write a commit message'
+        }
     }
 };
 
